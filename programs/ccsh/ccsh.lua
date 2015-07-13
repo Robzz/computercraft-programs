@@ -53,18 +53,18 @@ local function mainLoop()
     while true do
         term.write(environment.PS2)
         cmd = io.read()
-        shell.run(cmd)
+        parseLine(cmd)
     end
 end
 
 local function executeScript(filename)
-   if not fs.exists(filename) then
-       print("Error : file " .. filename .. " does not exist.")
-       return
-   end
-   for line in io.lines(filename) do
-       parseLine(line)
-   end
+    if not fs.exists(filename) then
+        print("Error : file " .. filename .. " does not exist.")
+        return
+    end
+    for line in io.lines(filename) do
+        parseLine(line)
+    end
 end
 
 local params = parseArgs()
