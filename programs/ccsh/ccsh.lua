@@ -43,12 +43,17 @@ local function parseArgs()
 end
 
 local function parseLine(line)
+    -- TODO : a way to escape semicolons that are not meant to separate commands.
+    -- Quotes maybe?
     for subcommand in string.gmatch(line, "[^;]+") do
         shell.run(subcommand)
     end
 end
 
 local function mainLoop() 
+    -- TODO : - an "exit" builtin to exit the shell and return to the CC shell?
+    --        - allow running scripts the same way programs are run without invoking a new ccsh instance.
+    --          this should probably be based on the file extension, say, ".sh"
     local cmd
     while true do
         term.write(environment.PS2)
@@ -62,6 +67,7 @@ local function executeScript(filename)
         print("Error : file " .. filename .. " does not exist.")
         return
     end
+    -- TODO : in case of error, stop the script and print the line.
     for line in io.lines(filename) do
         parseLine(line)
     end
@@ -69,6 +75,7 @@ end
 
 local params = parseArgs()
 if not params.ok then
+    -- Is this useful? Can I check the return status of a program in CC?
     return 1
 end
 
